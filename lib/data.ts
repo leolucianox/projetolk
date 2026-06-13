@@ -319,6 +319,7 @@ export function getContent(lang: Lang) {
         p(lang, "Política do Estúdio", "Studio Policy"),
       ],
       rights: p(lang, "Todos os direitos reservados", "All rights reserved"),
+      credit: p(lang, "Criado por", "Created by"),
     },
   };
 }

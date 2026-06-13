@@ -1,18 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Wordmark } from "@/components/brand";
 import { RollText } from "@/components/ui/roll-text";
 import { LangToggle } from "@/components/ui/lang-toggle";
 import { useContent } from "@/lib/i18n";
+import { cn } from "@/lib/cn";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  // hidden: tucked above the viewport (hides on scroll-down, reveals on scroll-up).
+  // scrolled: past the top → show a readable backdrop so the bar stays legible
+  // even when it slides back in over the dark sections.
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const lastY = useRef(0);
   const { nav } = useContent();
 
+  useEffect(() => {
+    lastY.current = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 16);
+      if (y < 80) {
+        setHidden(false); // always visible near the very top
+      } else if (y > lastY.current + 4) {
+        setHidden(true); // scrolling down → hide
+      } else if (y < lastY.current - 4) {
+        setHidden(false); // scrolling up → reveal (slides down)
+      }
+      lastY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // When the mobile menu is open the bar must stay in view.
+  const tucked = hidden && !open;
+
   return (
-    <header className="absolute inset-x-0 top-0 z-50">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-[transform,background-color,backdrop-filter] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        tucked ? "-translate-y-full" : "translate-y-0",
+        scrolled && !tucked && !open
+          ? "border-b border-black/5 bg-base/80 backdrop-blur-md"
+          : "border-b border-transparent",
+      )}
+    >
       <div className="mx-auto flex max-w-[1680px] items-center justify-between px-5 py-5 md:px-10 md:py-7">
         <a href="/" aria-label="Larissa Wand — início" className="shrink-0">
           <Wordmark />
