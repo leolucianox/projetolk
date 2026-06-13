@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Wordmark } from "@/components/brand";
 import { RollText } from "@/components/ui/roll-text";
@@ -8,8 +9,34 @@ import { LangToggle } from "@/components/ui/lang-toggle";
 import { useContent } from "@/lib/i18n";
 import { cn } from "@/lib/cn";
 
+/**
+ * Hand-drawn "pen stroke" underline marking the page currently being viewed.
+ * Rust-coloured (the contact section's background). Height/position use `em` so
+ * it scales with the link size on every resolution.
+ */
+function ActiveMark({ strokeWidth = 2.5 }: { strokeWidth?: number }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 120 10"
+      preserveAspectRatio="none"
+      fill="none"
+      className="pointer-events-none absolute left-0 top-full -mt-[0.08em] h-[0.34em] w-full overflow-visible"
+    >
+      <path
+        d="M1.5 6 C 22 2.5, 44 8, 66 5 C 88 2, 105 7.5, 118.5 4.5"
+        stroke="var(--color-rust)"
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  );
+}
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   // hidden: tucked above the viewport. Slides up out of view on scroll-down and
   // slides back down into the page on scroll-up — a plain rise/fall, no backdrop.
   const [hidden, setHidden] = useState(false);
@@ -37,6 +64,7 @@ export function Navbar() {
   const tucked = hidden && !open;
 
   return (
+    <>
     <header
       className={cn(
         // Solid site-coloured background so the bar reads over any section as it
@@ -56,7 +84,10 @@ export function Navbar() {
             {nav.map((item) => (
               <li key={item.label} className="group">
                 <a href={item.href} className="leading-none">
-                  <RollText text={item.label} duration="duration-[450ms]" />
+                  <span className="relative inline-block">
+                    <RollText text={item.label} duration="duration-[450ms]" />
+                    {pathname === item.href && <ActiveMark />}
+                  </span>
                 </a>
               </li>
             ))}
@@ -75,8 +106,12 @@ export function Navbar() {
           Menu
         </button>
       </div>
+    </header>
 
-      {/* Mobile overlay */}
+      {/* Mobile overlay — rendered as a sibling of the header (not inside it)
+          so its `fixed inset-0` covers the viewport. A `fixed` element nested in
+          the header would be clipped to the header's box because the header uses
+          a transform for its hide/reveal animation. */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -110,7 +145,10 @@ export function Navbar() {
                     whileTap={{ scale: 0.96, opacity: 0.6 }}
                     className="title-large block py-1 text-[clamp(2rem,11vw,3.5rem)]"
                   >
-                    {item.label}
+                    <span className="relative inline-block">
+                      {item.label}
+                      {pathname === item.href && <ActiveMark strokeWidth={4} />}
+                    </span>
                   </motion.a>
                 </motion.li>
               ))}
@@ -122,6 +160,6 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
