@@ -58,15 +58,18 @@ export function Footer() {
         <div className="mt-20 flex flex-col items-center gap-6 text-[10px] uppercase tracking-[0.1em] text-black/40 md:mt-28 md:flex-row md:justify-between">
           <p className="order-2 md:order-none">© {new Date().getFullYear()} Larissa Wand. {footer.rights}</p>
           <Wordmark className="order-1 text-[12px] tracking-[0.24em] text-black/70 md:order-none" />
-          {/* Author credit — replaces the studio handle on the right. */}
+          {/* Author credit — studio handle replaced by the LL portfolio badge. */}
           <a
             href="https://leoluciano.com.br/"
             target="_blank"
             rel="noreferrer"
             aria-label="Criado por Leo Luciano — leoluciano.com.br"
-            className="order-3 transition-colors duration-300 hover:text-black/70 md:order-none"
+            className="group order-3 inline-flex items-center gap-2 transition-colors duration-300 hover:text-black/70 md:order-none"
           >
-            {footer.credit} Leo Luciano
+            <span>{footer.credit}</span>
+            <span className="flex size-7 items-center justify-center rounded-full border border-black/20 text-[10px] font-bold leading-none tracking-normal text-black/55 transition-colors duration-300 group-hover:border-black/60 group-hover:text-black">
+              LL
+            </span>
           </a>
         </div>
       </div>

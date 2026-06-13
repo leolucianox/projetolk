@@ -39,7 +39,9 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        // Solid site-coloured background so the bar reads over any section as it
+        // slides in; blends seamlessly with the page at the top.
+        "fixed inset-x-0 top-0 z-50 bg-base transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
         tucked ? "-translate-y-full" : "translate-y-0",
       )}
     >
