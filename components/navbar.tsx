@@ -14,14 +14,23 @@ import { cn } from "@/lib/cn";
  * Rust-coloured (the contact section's background). Height/position use `em` so
  * it scales with the link size on every resolution.
  */
-function ActiveMark({ strokeWidth = 2.5 }: { strokeWidth?: number }) {
+function ActiveMark({
+  strokeWidth = 2.5,
+  className,
+}: {
+  strokeWidth?: number;
+  className?: string;
+}) {
   return (
     <svg
       aria-hidden
       viewBox="0 0 120 10"
       preserveAspectRatio="none"
       fill="none"
-      className="pointer-events-none absolute left-0 top-full -mt-[0.08em] h-[0.34em] w-full overflow-visible"
+      className={cn(
+        "pointer-events-none absolute left-0 top-full h-[0.34em] w-full overflow-visible",
+        className,
+      )}
     >
       <path
         d="M1.5 6 C 22 2.5, 44 8, 66 5 C 88 2, 105 7.5, 118.5 4.5"
@@ -86,7 +95,7 @@ export function Navbar() {
                 <a href={item.href} className="leading-none">
                   <span className="relative inline-block">
                     <RollText text={item.label} duration="duration-[450ms]" />
-                    {pathname === item.href && <ActiveMark />}
+                    {pathname === item.href && <ActiveMark className="mt-[3px]" />}
                   </span>
                 </a>
               </li>
@@ -147,7 +156,9 @@ export function Navbar() {
                   >
                     <span className="relative inline-block">
                       {item.label}
-                      {pathname === item.href && <ActiveMark strokeWidth={4} />}
+                      {pathname === item.href && (
+                        <ActiveMark strokeWidth={4} className="-mt-[0.08em]" />
+                      )}
                     </span>
                   </motion.a>
                 </motion.li>
