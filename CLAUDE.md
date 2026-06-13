@@ -22,6 +22,7 @@ Vale"); it has been fully rebranded to Larissa Wand. If you find any leftover
 - **Framer Motion** for animation
 - **lucide-react** for icons
 - Fonts: **Manrope** (Google) for body, **Baby Doll** (local, `fonts/babydoll/`) for display titles
+- **Lenis** for smooth scrolling + gentle section snapping (see `components/smooth-scroll.tsx`)
 - `playwright` is a devDependency, used only for ad-hoc screenshot verification
 
 ## Commands
@@ -79,7 +80,13 @@ process steps, etc. — edit `lib/data.ts`, **not** the components.
   - `slide-card`, `marquee`, `lightbox`, `roll-text`, `lang-toggle`,
     `arrow-button`, `auto-slider`.
 - `components/brand.tsx` — `Wordmark` (text logo), reads `brand.name`.
-- `components/navbar.tsx`, `hooks/*`.
+- `components/navbar.tsx` — `fixed` bar that hides on scroll-down and slides
+  back in on scroll-up (uses `window` scroll events; works with Lenis).
+- `components/smooth-scroll.tsx` — wraps the app in Lenis (`ReactLenis root`) for
+  smooth scrolling + smooth anchor links, and a proximity `Snap` that gently
+  centres every `.snap-section` / `.snap-section-center` element. Native CSS
+  scroll-snap / `scroll-behavior` are intentionally off (they'd fight Lenis).
+- `hooks/*`.
 
 ### Images
 

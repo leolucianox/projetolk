@@ -23,26 +23,11 @@
   color-scheme: light;
 }
 
-html {
-  scroll-behavior: smooth;
-  /* Gentle full-screen focus: each section eases into place without trapping
-     scroll on taller sections (Lens, Process). */
-  scroll-snap-type: y proximity;
-}
-
-/* Full-viewport section that snaps to the top as it comes into view. */
-.snap-section {
-  scroll-snap-align: start;
-}
-
-/* Variant for the About section: instead of locking to the top, it gently
-   centres in the viewport when scrolled past, so the portrait + bio are framed
-   rather than landing too high or too low. `scroll-snap-stop: always` makes the
-   scroll reliably settle here on the way through (a light, section-only lock). */
-.snap-section-center {
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-}
+/* Smooth scrolling and gentle section centring are handled by Lenis
+   (see components/smooth-scroll.tsx). Native scroll-snap / scroll-behavior are
+   intentionally left off so the two don't fight. The `.snap-section` and
+   `.snap-section-center` class names remain on the sections purely as markers
+   that Lenis' snap picks up. */
 
 body {
   font-family: var(--font-sans);

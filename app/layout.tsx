@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n";
+import { SmoothScroll } from "@/components/smooth-scroll";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -31,7 +32,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${manrope.variable} ${babydoll.variable}`}>
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <SmoothScroll>{children}</SmoothScroll>
+        </LanguageProvider>
       </body>
     </html>
   );
