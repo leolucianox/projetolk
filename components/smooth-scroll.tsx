@@ -7,9 +7,11 @@ import Snap from "lenis/snap";
 import "lenis/dist/lenis.css";
 
 /**
- * Gentle proximity snap: once the user settles near a full-screen section it is
- * nudged to the vertical centre. `proximity` + a distance threshold + debounce
- * keep it light — it never traps free scrolling, it just tidies the framing.
+ * Gentle proximity snap: once the user settles near a section it is nudged so
+ * its top (the heading) sits just under the navbar, with the section filling the
+ * screen below. `proximity` + a distance threshold + debounce keep it light — it
+ * never traps free scrolling, and tall sections (photo grids) only catch at the
+ * top, then scroll freely through the rest.
  */
 function ScrollSnap() {
   const lenis = useLenis();
@@ -20,7 +22,7 @@ function ScrollSnap() {
 
     const snap = new Snap(lenis, {
       type: "proximity", // only acts after you stop — never fights an active scroll
-      distanceThreshold: "42%", // centres the nearest section once you settle near it
+      distanceThreshold: "40%", // catches the nearest section top once you settle near it
       debounce: 250, // short pause after scrolling stops, then it eases into place
       duration: 0.8,
       easing: (t: number) => 1 - Math.pow(1 - t, 3), // easeOutCubic
@@ -31,7 +33,9 @@ function ScrollSnap() {
         ".snap-section, .snap-section-center",
       ),
     );
-    snap.addElements(sections, { align: "center" });
+    // Align to the section top so the heading lands near the top of the screen
+    // (each section carries enough top padding to clear the fixed navbar).
+    snap.addElements(sections, { align: "start" });
 
     return () => snap.destroy();
   }, [lenis, pathname]);

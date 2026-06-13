@@ -24,11 +24,9 @@ export function About({
     <section
       id="studio"
       className={cn(
-        // Centre-snap variant: the section gently locks centred in the viewport
-        // when scrolled past (instead of snapping its top to the top). The
-        // content — title included — is vertically centred so it lands framed,
-        // not hugging the top. Same treatment on the homepage and on /sobre.
-        "snap-section-center flex min-h-screen flex-col justify-center py-20 md:py-24",
+        // Title sits at the top of the section; Lenis snaps the section top just
+        // under the navbar so the heading leads and the content fills below.
+        "snap-section-center flex min-h-screen flex-col justify-start py-20 md:py-24",
       )}
     >
       <div className="mx-auto w-full max-w-[1680px] px-5 md:px-10">

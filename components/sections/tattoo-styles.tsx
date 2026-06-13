@@ -22,14 +22,16 @@ export function TattooStyles() {
   return (
     <section
       id="styles"
-      className="snap-section relative flex min-h-screen flex-col justify-center py-12 md:py-16"
+      className="snap-section relative flex min-h-screen flex-col py-20 md:py-24"
     >
-      <div className="mx-auto w-full max-w-[1680px] px-5 md:px-10">
+      <div className="mx-auto flex w-full max-w-[1680px] flex-1 flex-col px-5 md:px-10">
         <h2 className="title-large mb-7 text-center text-[clamp(2rem,5vw,3.5rem)] md:mb-9">
           {styles.eyebrow}
         </h2>
 
-        <div className="relative" onMouseLeave={() => setHovered(null)}>
+        {/* Title stays at the top; the list is centred in the space below it. */}
+        <div className="flex flex-1 flex-col justify-center">
+          <div className="relative" onMouseLeave={() => setHovered(null)}>
           {/* Floating preview (desktop) — tracks the hovered row */}
           <div className="pointer-events-none absolute inset-y-0 left-[16%] z-10 hidden lg:block">
             <AnimatePresence>
@@ -125,6 +127,7 @@ export function TattooStyles() {
               );
             })}
           </ul>
+          </div>
         </div>
       </div>
     </section>
