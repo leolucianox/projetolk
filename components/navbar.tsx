@@ -10,11 +10,9 @@ import { cn } from "@/lib/cn";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  // hidden: tucked above the viewport (hides on scroll-down, reveals on scroll-up).
-  // scrolled: past the top → show a readable backdrop so the bar stays legible
-  // even when it slides back in over the dark sections.
+  // hidden: tucked above the viewport. Slides up out of view on scroll-down and
+  // slides back down into the page on scroll-up — a plain rise/fall, no backdrop.
   const [hidden, setHidden] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const lastY = useRef(0);
   const { nav } = useContent();
 
@@ -22,13 +20,12 @@ export function Navbar() {
     lastY.current = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > 16);
       if (y < 80) {
         setHidden(false); // always visible near the very top
       } else if (y > lastY.current + 4) {
-        setHidden(true); // scrolling down → hide
+        setHidden(true); // scrolling down → slides up out of view
       } else if (y < lastY.current - 4) {
-        setHidden(false); // scrolling up → reveal (slides down)
+        setHidden(false); // scrolling up → slides back down into view
       }
       lastY.current = y;
     };
@@ -42,11 +39,8 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-[transform,background-color,backdrop-filter] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        "fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
         tucked ? "-translate-y-full" : "translate-y-0",
-        scrolled && !tucked && !open
-          ? "border-b border-black/5 bg-base/80 backdrop-blur-md"
-          : "border-b border-transparent",
       )}
     >
       <div className="mx-auto flex max-w-[1680px] items-center justify-between px-5 py-5 md:px-10 md:py-7">
